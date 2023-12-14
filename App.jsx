@@ -6,18 +6,21 @@ function App() {
   return (
     <>
       <ScrollView>
-        <Text style={styles.titulo}>Que hacer en Paris</Text>
         <Header />
+        <Image
+          style={styles.imagen}
+          source={require('./assets/img/cryptomonedas.png')}
+        />
       </ScrollView>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  titulo: {
-    fontWeight: 'bold',
-    fontSize: 24,
-    marginVertical: 20,
+  imagen: {
+    width: '100%',
+    height: 150,
+    marginHorizontal: '2.5%',
   },
 });
 
