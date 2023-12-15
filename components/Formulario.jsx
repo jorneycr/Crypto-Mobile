@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import axios from 'axios';
 
-const Formulario = () => {
-  const [moneda, setMoneda] = useState('');
-  const [cripto, setCripto] = useState('');
+const Formulario = ({moneda, cripto, setMoneda, setCripto, setConsultaApi}) => {
   const [criptos, setCriptos] = useState([]);
 
   useEffect(() => {
@@ -26,6 +24,18 @@ const Formulario = () => {
     setCripto(crypto);
   };
 
+  const cotizarPrecio = () => {
+    if (moneda.trim() === '' || cripto.trim() === '') {
+      mostrarAlerta();
+      return;
+    }
+    setConsultaApi(true);
+  };
+
+  const mostrarAlerta = () => {
+    Alert.alert('Error...', 'Ambos campos son obligatorios', [{text: 'OK'}]);
+  };
+
   return (
     <View>
       <Text style={styles.label}>Moneda</Text>
@@ -34,7 +44,9 @@ const Formulario = () => {
         onValueChange={coin => obtenerMoneda(coin)}>
         <Picker.Item label="- Selecione -" value="" />
         <Picker.Item label="Dolar" value="USD" />
+        <Picker.Item label="Dolar Mexicano" value="MXN" />
         <Picker.Item label="Euro" value="EUR" />
+        <Picker.Item label="Libra Esterlina" value="GBP" />
         <Picker.Item label="Colon" value="CRC" />
       </Picker>
       <Text style={styles.label}>Criptomoneda</Text>
@@ -50,6 +62,11 @@ const Formulario = () => {
           />
         ))}
       </Picker>
+      <TouchableHighlight
+        onPress={() => cotizarPrecio()}
+        style={styles.cotizarBtn}>
+        <Text style={styles.cotizarTexto}>Cotizar</Text>
+      </TouchableHighlight>
     </View>
   );
 };
@@ -60,6 +77,20 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginVertical: 20,
     textTransform: 'uppercase',
+  },
+  cotizarBtn: {
+    backgroundColor: '#5E49E2',
+    padding: 10,
+    marginTop: 20,
+    borderRadius: 10,
+    marginHorizontal: 30,
+  },
+  cotizarTexto: {
+    textAlign: 'center',
+    color: '#FFF',
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
 
