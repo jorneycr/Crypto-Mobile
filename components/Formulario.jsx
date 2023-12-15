@@ -6,7 +6,7 @@ import axios from 'axios';
 const Formulario = () => {
   const [moneda, setMoneda] = useState('');
   const [cripto, setCripto] = useState('');
-  const [criptos, setCriptos] = useState('');
+  const [criptos, setCriptos] = useState([]);
 
   useEffect(() => {
     const consultarApi = async () => {
@@ -21,6 +21,11 @@ const Formulario = () => {
   const obtenerMoneda = coin => {
     setMoneda(coin);
   };
+
+  const obtenerCrypto = crypto => {
+    setCripto(crypto);
+  };
+
   return (
     <View>
       <Text style={styles.label}>Moneda</Text>
@@ -33,6 +38,18 @@ const Formulario = () => {
         <Picker.Item label="Colon" value="CRC" />
       </Picker>
       <Text style={styles.label}>Criptomoneda</Text>
+      <Picker
+        selectedValue={cripto}
+        onValueChange={cripto => obtenerCrypto(cripto)}>
+        <Picker.Item label="- Selecione -" value="" />
+        {criptos.map(item => (
+          <Picker.Item
+            key={item.CoinInfo.Id}
+            label={item.CoinInfo.FullName}
+            value={item.CoinInfo.Name}
+          />
+        ))}
+      </Picker>
     </View>
   );
 };
