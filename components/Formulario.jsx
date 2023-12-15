@@ -1,10 +1,22 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
+import axios from 'axios';
 
 const Formulario = () => {
   const [moneda, setMoneda] = useState('');
   const [cripto, setCripto] = useState('');
+  const [criptos, setCriptos] = useState('');
+
+  useEffect(() => {
+    const consultarApi = async () => {
+      const url =
+        'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD';
+      const resultado = await axios.get(url);
+      setCriptos(resultado.data.Data);
+    };
+    consultarApi();
+  }, []);
 
   const obtenerMoneda = coin => {
     setMoneda(coin);
